@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="shortcut icon" href="../static/img/web/favicon.png" />
+  <title>Skoring Otomatis</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Open+Sans:wght@400;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css">
+  <link rel="stylesheet" href="../static/css/custom.css" />
+</head>
+
+<body data-spy="scroll" data-target="#spy" data-offset="200">
+  <!-- navigasi -->
+  <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="spy">
+    <div class="container">
+      <a class="navbar-brand" href="#beranda">TUGAS AKHIR</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="#beranda">Beranda</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#training">Training</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#testing">Testing</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- content -->
+  <div class="container">
+    <section id="beranda">
+      <div class="row">
+        <div class="col-md-6 pr-1">
+          <div class="caption">Skoring Otomatis
+            untuk <br> Jawaban Esai berdasarkan Kunci Jawaban
+            menggunakan Manhattan Long-Short Term Memory (MaLSTM)
+          </div>
+          <br />
+          <p><b>ALDO STEPANUS SIMARMATA - 161402065</b></p>
+          <div class="py-5">
+            <a href="#training" class="bt-primary-lg"> Training & Testing </a>
+          </div>
+          <p class="institusi">
+            Program Studi S1 Teknologi Informasi
+            <br />
+            Fakultas Ilmu Komputer dan Teknologi Informasi
+            <br />
+            Universitas Sumatera Utara
+            <br />
+            2020
+          </p>
+
+        </div>
+        <div class="col-md-6 my-auto">
+          <img src="../static/img/web/ceklis.svg" alt="" width="550px" />
+
+        </div>
+      </div>
+    </section>
+
+    <section id="training" class="content">
+      <h2 class="judul">Training</h2>
+
+      <br>
+      <div class="sub-judul">
+        Input Parameter untuk Training
+      </div>
+      <br>
+      <div class="row">
+        <div class="col-md-12">
+          <form id="formTrain" action="" enctype="multipart/form-data">
+            <div class="row">
+              <div class="col-2">
+                <div class="form-group">
+                  <label for="epoch">Epochs</label>
+                  <input type="number" name="epoch" id="epoch" class="form-control" min="1" max="500" value="20"
+                    placeholder="Epochs" />
+                </div>
+              </div>
+              <div class="col-2">
+                <div class="form-group">
+                  <label for="neuron">Hidden Neurons</label>
+                  <input type="number" name="neuron" id="neuron" class="form-control" min="10" max="100" value="30"
+                    placeholder="Neurons" />
+                </div>
+              </div>
+              <div class="col-2">
+                <div class="form-group">
+                  <label for="bs">Batch Size</label>
+                  <input type="number" name="bs" id="bs" class="form-control" min="1" max="1000" value="32"
+                    placeholder="Batch Size" />
+                </div>
+              </div>
+              <div class="col-3">
+                <div class="form-group">
+                  <label for="trainDataset">Upload Dataset</label>
+                  <input type="file" name="trainDataset" id="trainDataset" class="form-control" required />
+                </div>
+              </div>
+              <div class="col-3">
+                <div class="py-1"></div>
+                <div class="text-center py-3">
+                  <button type="button" class="bt bt-secondary mr-4 d-none" id="btnTrainReset">Reset
+                  </button>
+                  <button type="submit" id="btnTraining" class="bt bt-primary">Mulai Training
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <hr>
+
+
+      <div class="sub-judul">Hasil Training</div>
+      <div id="trainkosong" class="trainkosong">
+        <div id="spinner" class="text-center d-none">
+          <div class="lds-ring">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+          <div class="small py-4">
+            Training sedang berjalan ...
+          </div>
+        </div>
+      </div>
+      <div id="hasilTraining" class="d-none">
+        <div class="row hasil-training py-3">
+          <div class=" col-md-6 pr-1">
+            <div class="card">
+              <div class="card-body">
+                <p class="sub-judul">Grafik Loss</p>
+                <img src="../static/img/grafik/loss.png" alt="grafik-loss" id="gl" width="100%">
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 pl-1">
+            <div class="card">
+              <div class="card-body">
+                <p class="sub-judul">Detail</p>
+                <br>
+                <table class="table table-sm">
+                    <tr>
+                      <td><b>Max Input Word</b></td>
+                      <td>100</td>
+                      <td><b>Embedding Layer</b></td>
+                      <td>Shape : 300</td>
+                    </tr>
+                    <tr>
+                      <td><b>LSTM Layer</b></td>
+                      <td id="s_neuron"></td>
+                      <td><b>Output</b></td>
+                      <td>Manhattan Similarity</td>
+                    </tr>
+                    <tr>
+                      <td><b>Loss</b></td>
+                      <td>Mean Square Error</td>
+                      <td><b>Model Loss</b></td>
+                      <td id="model_loss"></td>
+                    </tr>
+                    <tr>
+                      <td><b>Optimizer</b></td>
+                      <td>Adadelta</td>
+                      <td><b>Epoch</b></td>
+                      <td id="early_epoch"></td>
+                    </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <section id="testing" class="content">
+      <h2 class="judul">Testing</h2>
+      <br>
+      <div class="sub-judul">
+        Upload File Testing
+      </div>
+      <br>
+      <div class="row">
+        <div class="col-md-12">
+          <form id="formTest" action="" enctype="multipart/form-data">
+            <div class="row">
+              <div class="col-3">
+                <div class="form-group">
+                  <label for="testDataset">Upload Dataset</label>
+                  <input type="file" name="testDataset" id="testDataset" class="form-control" required />
+                </div>
+              </div>
+              <div class="col-3">
+                <div class="py-1"></div>
+                <div class="text-center py-3">
+                  <button type="button" class="bt bt-secondary mr-4 disabled d-none" id="btnTestReset">
+                    Reset
+                  </button>
+                  <button type="submit" id="btnTest" class="bt bt-primary">
+                    Mulai Test
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <hr>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="sub-judul">Hasil Testing</div>
+          <div id="testkosong" class="testkosong">
+            <div id="test_spinner" class="text-center d-none">
+              <div class="lds-ring">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+              </div>
+              <div class="small py-4">
+                Testing sedang berjalan ...
+              </div>
+            </div>
+          </div>
+          <div id="hasilTest" class="py-4 d-none">
+            <div class="row py-3">
+              <div id="pearson" class="sub-judul col-md-6 text-center">Hasil Testing</div>
+              <div id="spearman" class="sub-judul col-md-6 text-center">Hasil Testing</div>
+            </div>
+            <table id="tabelPrediksi" class="table" style="width: 100%;">
+              <thead>
+                <tr>
+                  <th>Nama</th>
+                  <th>Jawaban Siswa</th>
+                  <th>Kunci Jawaban</th>
+                  <th>Human Rated Value</th>
+                  <th>System Prediction</th>
+                </tr>
+              </thead>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+  <footer class="footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4 align-middle my-auto">
+          <img src="../static/img/web/usu.png" alt="Logo Usu" width="50px" class="float-left" />
+          <p class="text-usu">Universitas Sumatera Utara</p>
+        </div>
+        <div class="col-md-4 my-auto">
+          <a class="footer-navbar-brand" href="#beranda">TUGAS AKHIR</a>
+          <p>
+            Skoring Otomatis untuk Jawaban Esai berdasarkan Kunci Jawaban
+            Menggunakan Manhattan Long Short-Term Memory (MaLSTM)
+          </p>
+        </div>
+        <div class="col-md-4 my-auto">
+          <p class="footer-name text-right">Aldo Stepanus Simarmata - 161402065</p>
+          <p class="small text-right">
+            Program Studi S1 Teknologi Informasi
+            <br />
+            Fakultas Ilmu Komputer dan Teknologi Informasi
+            <br />
+            Universitas Sumatera Utara
+            <br />
+            2020
+          </p>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <script src="https://code.jquery.com/jquery-3.5.1.js">
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
+  </script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+  <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
+  <script src="../static/js/custom.js"></script>
+</body>
+
+</html>
