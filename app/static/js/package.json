@@ -1,0 +1,14 @@
+{
+  "name": "js",
+  "version": "1.0.0",
+  "description": "",
+  "main": "custom.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "aldo",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^7.8.1"
+  }
+}
